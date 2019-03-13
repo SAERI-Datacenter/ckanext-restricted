@@ -4,7 +4,11 @@
 * {% trans %}Resource:{% endtrans %} {{ resource_name }} ({{ resource_link }})
 * {% trans %}Dataset:{% endtrans %} {{ package_name }}
 * {% trans %}User:{% endtrans %} {{ user_name }} ({{ user_email }})
-* {% trans %}Message:{% endtrans %} {{ message }}
+* {% trans %}Purpose:{% endtrans %} {{ purpose }}
+* {% trans %}Period of data reuse:{% endtrans %} {{ period }}
+* {% trans %}End users:{% endtrans %} {{ end_user }}
+* {% trans %}To be used in:{% endtrans %} {{ used_in }}
+* {% trans %}Intended audience:{% endtrans %} {{ audience }}
 
 {% trans %}You can allow this user to access you resource by adding {{ user_id }} to the list of allowed users.{% endtrans %}
 {% trans %}If you have editor rights, you can edit the resource in this link: {{ resource_edit_link }}.{% endtrans %}

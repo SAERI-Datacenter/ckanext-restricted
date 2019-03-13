@@ -148,12 +148,45 @@ msgid "Contact Email"
 msgstr ""
 
 #: ckanext/restricted/templates/restricted/restricted_request_access_form.html:34
-msgid "Message"
+msgid "Purpose of data request"
 msgstr ""
 
 #: ckanext/restricted/templates/restricted/restricted_request_access_form.html:34
-msgid "Message to request data (project, research group, planned usage, etc.)"
+msgid "Please state clearly the reason why you are asking for data"
 msgstr ""
+
+#: ckanext/restricted/templates/restricted/restricted_request_access_form.html:35
+msgid "Period of data reuse"
+msgstr ""
+
+#: ckanext/restricted/templates/restricted/restricted_request_access_form.html:35
+msgid "Specify period as from YYYY_MM_DD to YYYY-MM_DD"
+msgstr ""
+
+#: ckanext/restricted/templates/restricted/restricted_request_access_form.html:36
+msgid "End Users"
+msgstr ""
+
+#: ckanext/restricted/templates/restricted/restricted_request_access_form.html:36
+msgid "State the end users if not directly the applicant"
+msgstr ""
+
+#: ckanext/restricted/templates/restricted/restricted_request_access_form.html:37
+msgid "To be used in"
+msgstr ""
+
+#: ckanext/restricted/templates/restricted/restricted_request_access_form.html:37
+msgid "Please specify if data are to be used in reports, presentation, etc"
+msgstr ""
+
+#: ckanext/restricted/templates/restricted/restricted_request_access_form.html:38
+msgid "Intended audience"
+msgstr ""
+
+#: ckanext/restricted/templates/restricted/restricted_request_access_form.html:38
+msgid "State the receipients of the data if appropriate"
+msgstr ""
+
 
 #: ckanext/restricted/templates/restricted/restricted_request_access_form.html:44
 #, python-format
