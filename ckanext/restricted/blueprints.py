@@ -140,6 +140,11 @@ def _send_request_mail(data):
             'resource_edit_link': config.get('ckan.site_url') + resource_edit_link,
             'package_name': data.get('resource_name', ''),
             'message': data.get('message', ''),
+            'purpose': data.get('purpose', ''),
+            'period': data.get('period', ''),
+            'end_user': data.get('end_user', ''),
+            'used_in': data.get('used_in', ''),
+            'audience': data.get('audience', ''),
             'admin_email_to': config.get('email_to', 'email_to_undefined')}
 
         mail_template = 'restricted/emails/restricted_access_request.txt'
@@ -218,7 +223,27 @@ def _send_request(context):
     errors = {}
     error_summary = {}
 
-    if (data_dict['message'] == ''):
+    if (data_dict['purpose'] == ''):
+        msg = _('Missing Value')
+        errors['message'] = [msg]
+        error_summary['message'] = msg
+
+    if (data_dict['period'] == ''):
+        msg = _('Missing Value')
+        errors['message'] = [msg]
+        error_summary['message'] = msg
+
+    if (data_dict['end_user'] == ''):
+        msg = _('Missing Value')
+        errors['message'] = [msg]
+        error_summary['message'] = msg
+
+    if (data_dict['used_in'] == ''):
+        msg = _('Missing Value')
+        errors['message'] = [msg]
+        error_summary['message'] = msg
+
+    if (data_dict['audience'] == ''):
         msg = _('Missing Value')
         errors['message'] = [msg]
         error_summary['message'] = msg
