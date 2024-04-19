@@ -36,6 +36,8 @@ ckanext-restricted
    What does it do? What features does it have?
    Consider including some screenshots or embedding a video!
 
+** This extension is based on the no longer maintained EnviDat plugin. (github.com/envidat/ckanext-restricted/forks) **
+
 CKAN extension to restrict the accessibility to the resources of a dataset.
 This way the package metadata is accesible but not the data itself (resource). 
 The resource access restriction level can be individualy defined for every package.
