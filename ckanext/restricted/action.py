@@ -3,8 +3,8 @@
 from __future__ import unicode_literals
 import ckan.authz as authz
 from ckan.common import _
+import ckan.lib.base as base
 
-from ckan.lib.base import render_jinja2
 from ckan.lib.mailer import mail_recipient
 from ckan.lib.mailer import MailerException
 import ckan.logic
@@ -18,20 +18,14 @@ from ckanext.restricted import auth
 from ckanext.restricted import logic
 import json
 
-try:
-    # CKAN 2.7 and later
-    from ckan.common import config
-except ImportError:
-    # CKAN 2.6 and earlier
-    from pylons import config
+from ckan.common import config
 
 from logging import getLogger
 log = getLogger(__name__)
 
-
 _get_or_bust = ckan.logic.get_or_bust
-
 NotFound = ckan.logic.NotFound
+render = base.render
 
 
 def restricted_user_create_and_notify(context, data_dict):
@@ -60,7 +54,7 @@ def restricted_user_create_and_notify(context, data_dict):
             'site_url': config.get('ckan.site_url'),
             'user_info': body_from_user_dict(user_dict)}
 
-        body = render_jinja2(
+        body = render(
             'restricted/emails/restricted_user_registered.txt', extra_vars)
 
         mail_recipient(name, email, subject, body)
@@ -69,7 +63,7 @@ def restricted_user_create_and_notify(context, data_dict):
         log.error('Cannot send mail after registration')
         log.error(mailer_exception)
 
-    return (user_dict)
+    return user_dict
 
 
 @side_effect_free
@@ -108,7 +102,7 @@ def restricted_package_show(context, data_dict):
     restricted_package_metadata['resources'] = _restricted_resource_list_hide_fields(
         context, restricted_package_metadata.get('resources', []))
 
-    return (restricted_package_metadata)
+    return restricted_package_metadata
 
 
 @side_effect_free
@@ -135,22 +129,49 @@ def restricted_package_search(context, data_dict):
 
     restricted_package_search_result = {}
 
+    package_show_context = context.copy()
+    package_show_context['with_capacity'] = False
+
     # XXX arb remove capacity before package_show
-    context['with_capacity'] = None
-    del context['with_capacity']
+    # TODO pre merge this was customised to remove with_capacity. This seems to habe
+    #  been done with the addition of the above 2 lines but this needs testing
+    #  context['with_capacity'] = None
+    #  del context['with_capacity']
 
     for key, value in package_search_result.items():
         if key == 'results':
             restricted_package_search_result_list = []
             for package in value:
                 restricted_package_search_result_list.append(
-                    restricted_package_show(context, {'id': package.get('id')}))
+                    restricted_package_show(package_show_context, {'id': package.get('id')}))
             restricted_package_search_result[key] = \
                 restricted_package_search_result_list
         else:
             restricted_package_search_result[key] = value
 
     return restricted_package_search_result
+
+@side_effect_free
+def restricted_check_access(context, data_dict):
+
+    package_id = data_dict.get('package_id', False)
+    resource_id = data_dict.get('resource_id', False)
+
+    user_name = logic.restricted_get_username_from_context(context)
+
+    if not package_id:
+        raise ckan.logic.ValidationError('Missing package_id')
+    if not resource_id:
+        raise ckan.logic.ValidationError('Missing resource_id')
+
+    log.debug("action.restricted_check_access: user_name = " + str(user_name))
+
+    log.debug("checking package " + str(package_id))
+    package_dict = ckan.logic.get_action('package_show')(dict(context, return_type='dict'), {'id': package_id})
+    log.debug("checking resource")
+    resource_dict = ckan.logic.get_action('resource_show')(dict(context, return_type='dict'), {'id': resource_id})
+
+    return logic.restricted_check_user_resource_access(user_name, resource_dict, package_dict)
 
 # def _restricted_resource_list_url(context, resource_list):
 #     restricted_resources_list = []
