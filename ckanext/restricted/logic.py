@@ -21,7 +21,7 @@ render = base.render
 def restricted_get_username_from_context(context):
     auth_user_obj = context.get('auth_user_obj', None)
     user_name = ''
-    if auth_user_obj:
+    if auth_user_obj and not auth_user_obj.is_anonymous:
         user_name = auth_user_obj.as_dict().get('name', '')
     else:
         if authz.get_user_id_for_username(context.get('user'), allow_none=True):
